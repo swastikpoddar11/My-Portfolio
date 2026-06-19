@@ -279,7 +279,7 @@ const CARD_SLOT_WIDTH = 300;   // px of extra strip per extra card
 const makeStrip = (projects) => {
   if (!projects.length) return { strip: [], stripW: BASE_STRIP_W };
 
-  const extraCards = Math.max(0, projects.length - 7);
+  const extraCards = projects.length;
   const stripW = BASE_STRIP_W + extraCards * CARD_SLOT_WIDTH;
 
   // ── Collision-aware grid with relaxation ──
