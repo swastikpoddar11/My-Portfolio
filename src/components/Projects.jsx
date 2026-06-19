@@ -337,9 +337,9 @@ const makeStrip = (projects) => {
       const x = centreX + xJitter;
       const y = centreY + yJitter;
 
-      // Z depth (-220 to +220)
+      // Z depth (-60 to +60)
       const zRaw = rnd(sZ);
-      const z = Math.round((Math.sin(zRaw * Math.PI) * 0.6 + zRaw * 0.4) * 440 - 220);
+      const z = Math.round((Math.sin(zRaw * Math.PI) * 0.6 + zRaw * 0.4) * 120 - 60);
 
       positions.push({
         x,
@@ -540,8 +540,8 @@ const Projects = ({ isDayMode }) => {
       const uid = `${keyPrefix}-${key}`;
       const isHovered = hoveredKey === uid;
 
-      // depth factor 0→1 (z ranges from -220 to +220)
-      const depthFactor = (z + 220) / 440;
+      // depth factor 0→1 (z ranges from -60 to +60)
+      const depthFactor = (z + 60) / 120;
 
       // ALL cards are fully interactive regardless of depth.
       const baseZIndex = Math.round(100 + z);           // -120 → 320
