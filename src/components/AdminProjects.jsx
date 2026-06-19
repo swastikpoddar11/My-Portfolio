@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { X, Plus, Trash2, Save, Eye, EyeOff, Lock, LogOut, AlertCircle, CheckCircle, Edit3, Tag, Upload, ImageOff, FolderOpen, Download, Briefcase, Trophy } from 'lucide-react';
+import { X, Plus, Trash2, Save, Eye, EyeOff, Lock, LogOut, AlertCircle, CheckCircle, Edit3, Tag, Upload, ImageOff, FolderOpen, Download, Briefcase, Trophy, Settings, RefreshCw } from 'lucide-react';
 import { defaultProjects, renderBlankCardContent } from './Projects';
 import { defaultExperiences } from './Experience';
 import portfolioData from '../data/portfolio_data.json';
@@ -31,6 +31,54 @@ const sha256 = async (str) => {
   const buf = new TextEncoder().encode(str);
   const hash = await crypto.subtle.digest('SHA-256', buf);
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+};
+
+// ─── GitHub REST API Commit sync ──────────────────────────────────────────────
+const syncToGitHub = async (data, token, repo, branch = 'main') => {
+  const path = 'src/data/portfolio_data.json';
+  const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+  
+  // 1. Get current file SHA to perform a commit replace
+  const getRes = await fetch(`${url}?ref=${branch}`, {
+    headers: {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  });
+  
+  if (!getRes.ok) {
+    throw new Error(`Failed to fetch current file from GitHub: ${getRes.statusText}`);
+  }
+  
+  const fileData = await getRes.json();
+  const sha = fileData.sha;
+  
+  // Convert new data to base64 with support for UTF-8 Unicode characters
+  const jsonStr = JSON.stringify(data, null, 2);
+  const base64Content = btoa(unescape(encodeURIComponent(jsonStr)));
+  
+  // 2. Commit (PUT) the updated file
+  const putRes = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message: 'update portfolio data from admin panel',
+      content: base64Content,
+      sha: sha,
+      branch: branch
+    })
+  });
+  
+  if (!putRes.ok) {
+    const errData = await putRes.json();
+    throw new Error(errData.message || `Failed to commit to GitHub: ${putRes.statusText}`);
+  }
+  
+  return await putRes.json();
 };
 
 // ─── Shared style tokens ──────────────────────────────────────────────────────
@@ -728,7 +776,7 @@ const ExperienceManager = ({ experiences, onSaveAll, onToast }) => {
 };
 
 // ─── About Me Manager Panel ──────────────────────────────────────────────────
-const AboutMeManager = ({ onToast }) => {
+const AboutMeManager = ({ onToast, onSync }) => {
   const [resume, setResume] = useState('');
   const [resumeName, setResumeName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -764,11 +812,15 @@ const AboutMeManager = ({ onToast }) => {
     setLoading(true);
     try {
       const b64 = await readFileAsBase64(file);
-      localStorage.setItem('swastik_portfolio_resume', b64);
-      localStorage.setItem('swastik_portfolio_resume_name', file.name);
       setResume(b64);
       setResumeName(file.name);
-      window.dispatchEvent(new Event('storage'));
+      if (onSync) {
+        await onSync('resumeUpdate', { resume: b64, resumeName: file.name });
+      } else {
+        localStorage.setItem('swastik_portfolio_resume', b64);
+        localStorage.setItem('swastik_portfolio_resume_name', file.name);
+        window.dispatchEvent(new Event('storage'));
+      }
       onToast({ msg: 'Resume updated successfully.', type: 'success' });
     } catch {
       onToast({ msg: 'Failed to upload resume.', type: 'error' });
@@ -778,19 +830,27 @@ const AboutMeManager = ({ onToast }) => {
     }
   };
 
-  const handleRemove = () => {
-    localStorage.removeItem('swastik_portfolio_resume');
-    localStorage.removeItem('swastik_portfolio_resume_name');
+  const handleRemove = async () => {
     setResume('');
     setResumeName('Swastik Poddar - Social Media.pdf');
-    window.dispatchEvent(new Event('storage'));
+    if (onSync) {
+      await onSync('resumeUpdate', { resume: '', resumeName: '' });
+    } else {
+      localStorage.removeItem('swastik_portfolio_resume');
+      localStorage.removeItem('swastik_portfolio_resume_name');
+      window.dispatchEvent(new Event('storage'));
+    }
     onToast({ msg: 'Resume reverted to default.', type: 'success' });
   };
 
-  const saveSkills = (updated) => {
-    localStorage.setItem('swastik_portfolio_skills', JSON.stringify(updated));
+  const saveSkills = async (updated) => {
     setSkills(updated);
-    window.dispatchEvent(new Event('storage'));
+    if (onSync) {
+      await onSync('skills', updated);
+    } else {
+      localStorage.setItem('swastik_portfolio_skills', JSON.stringify(updated));
+      window.dispatchEvent(new Event('storage'));
+    }
   };
 
   const addSkill = () => {
@@ -1043,6 +1103,165 @@ const LoginScreen = ({ onSuccess }) => {
   );
 };
 
+// ─── GitHub Sync Settings Panel ──────────────────────────────────────────────
+const GithubSyncSettings = ({ onToast }) => {
+  const [token, setToken] = useState(() => localStorage.getItem('swastik_portfolio_github_token') || '');
+  const [repo, setRepo] = useState(() => localStorage.getItem('swastik_portfolio_github_repo') || 'swastikpoddar11/My-Portfolio');
+  const [branch, setBranch] = useState(() => localStorage.getItem('swastik_portfolio_github_branch') || 'main');
+  const [showToken, setShowToken] = useState(false);
+  const [testing, setTesting] = useState(false);
+  const [testResult, setTestResult] = useState(null);
+
+  const handleSave = () => {
+    localStorage.setItem('swastik_portfolio_github_token', token.trim());
+    localStorage.setItem('swastik_portfolio_github_repo', repo.trim());
+    localStorage.setItem('swastik_portfolio_github_branch', branch.trim());
+    onToast({ msg: 'Sync settings saved!', type: 'success' });
+  };
+
+  const handleTest = async () => {
+    if (!token.trim()) {
+      setTestResult({ success: false, msg: 'Please enter a GitHub Personal Access Token.' });
+      return;
+    }
+    setTesting(true);
+    setTestResult(null);
+    try {
+      const res = await fetch(`https://api.github.com/repos/${repo.trim()}`, {
+        headers: {
+          'Authorization': `token ${token.trim()}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+      if (res.ok) {
+        const repoData = await res.json();
+        if (repoData.permissions && (repoData.permissions.push || repoData.permissions.admin)) {
+          setTestResult({ success: true, msg: `Connection successful! Write access verified for branch "${branch}".` });
+        } else {
+          setTestResult({ success: false, msg: 'Connected, but you do not have write (push) permissions to this repository.' });
+        }
+      } else {
+        const err = await res.json();
+        setTestResult({ success: false, msg: `Connection failed: ${err.message || res.statusText}` });
+      }
+    } catch (err) {
+      setTestResult({ success: false, msg: `Network error: ${err.message}` });
+    } finally {
+      setTesting(false);
+    }
+  };
+
+  const handleClear = () => {
+    localStorage.removeItem('swastik_portfolio_github_token');
+    localStorage.removeItem('swastik_portfolio_github_repo');
+    localStorage.removeItem('swastik_portfolio_github_branch');
+    setToken('');
+    setRepo('swastikpoddar11/My-Portfolio');
+    setBranch('main');
+    setTestResult(null);
+    onToast({ msg: 'Sync settings cleared.', type: 'success' });
+  };
+
+  const isLocal = window.location.hostname === 'localhost';
+
+  return (
+    <div className="bg-[#0a0a0a] border border-[#E8D9C5]/6 rounded-2xl p-6 space-y-6 max-w-2xl animate-[fadeIn_0.3s_ease]">
+      <div>
+        <h3 className="font-serif-about text-lg text-[#E8D9C5] font-semibold mb-2">GitHub Auto-Sync</h3>
+        <p className="font-montserrat font-light text-xs text-[#E8D9C5]/50 leading-relaxed">
+          Configure GitHub Auto-Sync to automatically commit your changes back to your GitHub repository whenever you update something in this admin panel. This triggers a redeployment on Netlify/Vercel and updates the live website for everyone.
+        </p>
+      </div>
+
+      {isLocal && (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#D4B48A]/5 border border-[#D4B48A]/20 text-[#D4B48A]/70 font-montserrat font-light text-xs mb-4">
+          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          <span><strong>Local Development Mode:</strong> Changes are saved directly to your local file <code>src/data/portfolio_data.json</code>. You do not need to configure GitHub sync locally. Just commit and push when you are ready to publish!</span>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        <div>
+          <label className={lc}>GitHub Personal Access Token (PAT)</label>
+          <div className="relative">
+            <input
+              type={showToken ? 'text' : 'password'}
+              value={token}
+              onChange={e => setToken(e.target.value)}
+              placeholder="ghp_xxxxxxxxxxxx"
+              className={`${ic} pr-12`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowToken(p => !p)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#E8D9C5]/30 hover:text-[#E8D9C5]/60 transition-colors"
+            >
+              {showToken ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
+          <p className="mt-1.5 font-montserrat font-light text-[10px] text-[#E8D9C5]/35 leading-normal">
+            Generate a token under <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer" className="text-[#D4B48A] hover:underline">GitHub Settings → Developer settings → Personal access tokens (classic)</a> with the <code className="text-[#D4B48A]">repo</code> scope checked.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className={lc}>Repository Name</label>
+            <input
+              type="text"
+              value={repo}
+              onChange={e => setRepo(e.target.value)}
+              placeholder="owner/repo"
+              className={ic}
+            />
+          </div>
+          <div>
+            <label className={lc}>Branch</label>
+            <input
+              type="text"
+              value={branch}
+              onChange={e => setBranch(e.target.value)}
+              placeholder="main"
+              className={ic}
+            />
+          </div>
+        </div>
+
+        {testResult && (
+          <div className={`flex items-start gap-2.5 px-4 py-3 rounded-xl border font-montserrat font-light text-xs animate-[fadeIn_0.2s_ease] ${testResult.success ? 'bg-[#D4B48A]/10 border-[#D4B48A]/30 text-[#D4B48A]' : 'bg-red-900/20 border-red-500/25 text-red-400'}`}>
+            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <span>{testResult.msg}</span>
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-3 pt-3 border-t border-[#E8D9C5]/6">
+          <button
+            onClick={handleSave}
+            className={`${btn} bg-[#D4B48A]/10 border border-[#D4B48A]/35 text-[#D4B48A] hover:bg-[#D4B48A] hover:text-black hover:border-transparent`}
+          >
+            Save Settings
+          </button>
+          <button
+            onClick={handleTest}
+            disabled={testing}
+            className={`${btn} border border-[#E8D9C5]/15 text-[#E8D9C5]/70 hover:border-[#E8D9C5]/30 disabled:opacity-55`}
+          >
+            {testing ? 'Testing...' : 'Test Connection'}
+          </button>
+          {token && (
+            <button
+              onClick={handleClear}
+              className={`${btn} border border-red-500/20 text-red-400/70 hover:border-red-500/40 hover:text-red-400 ml-auto`}
+            >
+              Clear Config
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ─── Admin Dashboard ──────────────────────────────────────────────────────────
 const AdminDashboard = ({ onLogout }) => {
   const [projects,   setProjects]   = useState(() => {
@@ -1082,6 +1301,7 @@ const AdminDashboard = ({ onLogout }) => {
   const [toast, setToast]               = useState(null);
   const [activeTab, setActiveTab]        = useState('projects'); // 'projects' | 'categories'
   const importFileInputRef = useRef(null);
+  const [showPublishModal, setShowPublishModal] = useState(false);
 
   const handleExportJSON = () => {
     try {
@@ -1105,7 +1325,7 @@ const AdminDashboard = ({ onLogout }) => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      setToast({ msg: 'Data exported successfully.', type: 'success' });
+      setShowPublishModal(true);
     } catch (err) {
       setToast({ msg: 'Failed to export data.', type: 'error' });
     }
@@ -1166,17 +1386,6 @@ const AdminDashboard = ({ onLogout }) => {
     e.target.value = '';
   };
 
-  const persistExperiences = (updated) => {
-    try {
-      localStorage.setItem('swastik_portfolio_experiences', JSON.stringify(updated));
-      setExperiences(updated);
-      window.dispatchEvent(new Event('storage'));
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
   // Compress a base64 image to JPEG via canvas and return new base64
   const compressImage = (b64, quality = 0.65) => new Promise((resolve) => {
     try {
@@ -1195,39 +1404,110 @@ const AdminDashboard = ({ onLogout }) => {
     } catch { resolve(b64); }
   });
 
-  const persistProjects = async (updated) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      setProjects(updated);
-      window.dispatchEvent(new Event('storage'));
-      return true;
-    } catch {
-      // Quota hit — try compressing all base64 images in the list then retry
+  const triggerSync = async (type, updatedVal) => {
+    let nextProjects = projects;
+    let nextCategories = categories;
+    let nextExperiences = experiences;
+
+    if (type === 'projects') {
       try {
-        const compressed = await Promise.all(updated.map(async (p) => {
-          if (p.image && p.image.startsWith('data:')) {
-            const small = await compressImage(p.image);
-            return { ...p, image: small, downloadUrl: small };
-          }
-          return p;
-        }));
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(compressed));
-        setProjects(compressed);
-        window.dispatchEvent(new Event('storage'));
-        return true;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedVal));
+        setProjects(updatedVal);
+        nextProjects = updatedVal;
       } catch {
-        // Still over quota — save without heavy images, project metadata is preserved
         try {
-          const stripped = updated.map(p =>
+          const compressed = await Promise.all(updatedVal.map(async (p) => {
+            if (p.image && p.image.startsWith('data:')) {
+              const small = await compressImage(p.image);
+              return { ...p, image: small, downloadUrl: small };
+            }
+            return p;
+          }));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(compressed));
+          setProjects(compressed);
+          nextProjects = compressed;
+        } catch {
+          const stripped = updatedVal.map(p =>
             p.image && p.image.startsWith('data:') ? { ...p, image: '', downloadUrl: '' } : p
           );
           localStorage.setItem(STORAGE_KEY, JSON.stringify(stripped));
           setProjects(stripped);
-          window.dispatchEvent(new Event('storage'));
-        } catch { /* truly unrecoverable, silently skip */ }
-        return true; // return true so the modal closes and user sees success
+          nextProjects = stripped;
+        }
+      }
+    } else if (type === 'categories') {
+      localStorage.setItem(CATEGORIES_KEY, JSON.stringify(updatedVal));
+      setCategories(updatedVal);
+      nextCategories = updatedVal;
+    } else if (type === 'experiences') {
+      localStorage.setItem('swastik_portfolio_experiences', JSON.stringify(updatedVal));
+      setExperiences(updatedVal);
+      nextExperiences = updatedVal;
+    } else if (type === 'skills') {
+      localStorage.setItem('swastik_portfolio_skills', JSON.stringify(updatedVal));
+    } else if (type === 'resumeUpdate') {
+      const { resume: r, resumeName: rn } = updatedVal;
+      if (r) {
+        localStorage.setItem('swastik_portfolio_resume', r);
+        localStorage.setItem('swastik_portfolio_resume_name', rn);
+      } else {
+        localStorage.removeItem('swastik_portfolio_resume');
+        localStorage.removeItem('swastik_portfolio_resume_name');
       }
     }
+
+    localStorage.setItem('swastik_portfolio_last_updated', Date.now().toString());
+    window.dispatchEvent(new Event('storage'));
+
+    const fullData = {
+      lastUpdated: Date.now(),
+      projects: nextProjects,
+      categories: nextCategories,
+      experiences: nextExperiences,
+      skills: JSON.parse(localStorage.getItem('swastik_portfolio_skills') || '[]'),
+      resume: localStorage.getItem('swastik_portfolio_resume') || '',
+      resumeName: localStorage.getItem('swastik_portfolio_resume_name') || 'Swastik Poddar - Social Media.pdf'
+    };
+
+    if (window.location.hostname === 'localhost') {
+      try {
+        const response = await fetch('/api/save-portfolio', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(fullData)
+        });
+        if (response.ok) {
+          setToast({ msg: 'Saved changes directly to portfolio_data.json!', type: 'success' });
+        } else {
+          setToast({ msg: 'Failed to save portfolio_data.json locally.', type: 'error' });
+        }
+      } catch (err) {
+        setToast({ msg: 'Local save failed: ' + err.message, type: 'error' });
+      }
+    } else {
+      const token = localStorage.getItem('swastik_portfolio_github_token');
+      const repo = localStorage.getItem('swastik_portfolio_github_repo') || 'swastikpoddar11/My-Portfolio';
+      const branch = localStorage.getItem('swastik_portfolio_github_branch') || 'main';
+      if (token) {
+        setToast({ msg: 'Syncing changes to GitHub...', type: 'success' });
+        try {
+          await syncToGitHub(fullData, token, repo, branch);
+          setToast({ msg: 'Synced to GitHub! Deployment started.', type: 'success' });
+        } catch (err) {
+          setToast({ msg: 'GitHub Sync failed: ' + err.message, type: 'error' });
+        }
+      }
+    }
+  };
+
+  const persistExperiences = (updated) => {
+    triggerSync('experiences', updated);
+    return true;
+  };
+
+  const persistProjects = async (updated) => {
+    await triggerSync('projects', updated);
+    return true;
   };
 
   const handleSave = async (p) => {
@@ -1257,6 +1537,55 @@ const AdminDashboard = ({ onLogout }) => {
   return (
     <div className="min-h-screen bg-[#030303] text-[#E8D9C5]">
 
+      {/* ── Publish Instructions Modal ── */}
+      {showPublishModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" onClick={() => setShowPublishModal(false)} />
+          <div className="relative z-10 bg-[#0a0a0a] border border-[#D4B48A]/25 rounded-2xl p-8 max-w-lg w-full shadow-2xl animate-[fadeIn_0.25s_ease]">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-8 h-8 rounded-full bg-[#D4B48A]/15 flex items-center justify-center">
+                <Download className="w-4 h-4 text-[#D4B48A]" />
+              </div>
+              <h2 className="font-serif-about text-xl text-[#E8D9C5] font-semibold">portfolio_data.json downloaded!</h2>
+            </div>
+            <p className="font-montserrat font-light text-xs text-[#E8D9C5]/50 leading-relaxed mb-6">
+              To make your changes visible to everyone, replace the file in the project and redeploy:
+            </p>
+            <ol className="space-y-3 mb-7">
+              {[
+                { n: '1', text: 'Move the downloaded portfolio_data.json into your project folder:', sub: 'src/data/portfolio_data.json' },
+                { n: '2', text: 'Open terminal in your project folder and run:', sub: 'git add . && git commit -m "update portfolio data" && git push' },
+                { n: '3', text: 'Wait ~1 min for Netlify/Vercel to auto-deploy. Done! ✓', sub: null },
+              ].map(step => (
+                <li key={step.n} className="flex gap-3">
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#D4B48A]/20 border border-[#D4B48A]/35 text-[#D4B48A] font-montserrat font-light text-[10px] flex items-center justify-center mt-0.5">{step.n}</span>
+                  <div>
+                    <p className="font-montserrat font-light text-xs text-[#E8D9C5]/70 leading-relaxed">{step.text}</p>
+                    {step.sub && (
+                      <code className="mt-1 inline-block font-mono text-[11px] bg-[#D4B48A]/8 border border-[#D4B48A]/15 text-[#D4B48A] px-2.5 py-1 rounded-lg break-all">{step.sub}</code>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowPublishModal(false)}
+                className={`flex-1 py-2.5 rounded-full border border-[#E8D9C5]/15 text-[#E8D9C5]/50 font-montserrat font-light text-[10px] tracking-widest uppercase hover:border-[#E8D9C5]/30 hover:text-[#E8D9C5] transition-all`}
+              >
+                Got it
+              </button>
+              <button
+                onClick={handleExportJSON}
+                className={`flex-1 py-2.5 rounded-full bg-[#D4B48A]/10 border border-[#D4B48A]/35 text-[#D4B48A] font-montserrat font-light text-[10px] tracking-widest uppercase hover:bg-[#D4B48A] hover:text-black hover:border-transparent transition-all`}
+              >
+                <span className="flex items-center justify-center gap-1.5"><Download className="w-3 h-3" /> Re-download</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Top bar ── */}
       <header className="sticky top-0 z-40 bg-[#030303]/90 backdrop-blur-md border-b border-[#E8D9C5]/6 px-6 py-4 flex items-center justify-between">
         <div>
@@ -1265,11 +1594,11 @@ const AdminDashboard = ({ onLogout }) => {
         </div>
         <div className="flex items-center gap-3">
           <a href="/" className={`hidden sm:inline-flex ${btn} border border-[#E8D9C5]/12 text-[#E8D9C5]/50 hover:border-[#E8D9C5]/25 hover:text-[#E8D9C5]`}>View Site</a>
-          <button onClick={handleExportJSON} className={`${btn} border border-[#D4B48A]/35 text-[#D4B48A] hover:bg-[#D4B48A]/10`} title="Export data to portfolio_data.json">
-            <Download className="w-3.5 h-3.5" /> Export Data
+          <button onClick={handleExportJSON} className={`${btn} bg-[#D4B48A]/10 border border-[#D4B48A]/40 text-[#D4B48A] hover:bg-[#D4B48A] hover:text-black hover:border-transparent shadow-[0_0_16px_rgba(212,180,138,0.15)] transition-all`} title="Publish changes to the live site">
+            <Download className="w-3.5 h-3.5" /> Publish Changes
           </button>
           <button onClick={() => importFileInputRef.current?.click()} className={`${btn} border border-[#E8D9C5]/15 text-[#E8D9C5]/70 hover:border-[#E8D9C5]/30`} title="Import data from portfolio_data.json">
-            <Upload className="w-3.5 h-3.5" /> Import Data
+            <Upload className="w-3.5 h-3.5" /> Import
           </button>
           <input 
             type="file" 
@@ -1283,6 +1612,20 @@ const AdminDashboard = ({ onLogout }) => {
           </button>
         </div>
       </header>
+
+      {/* ── Sync info banner ── */}
+      <div className="bg-[#D4B48A]/4 border-b border-[#D4B48A]/10 px-6 py-2.5 flex items-center gap-3">
+        <AlertCircle className="w-3.5 h-3.5 text-[#D4B48A]/60 flex-shrink-0" />
+        <p className="font-montserrat font-light text-[10px] tracking-wide text-[#D4B48A]/60">
+          {window.location.hostname === 'localhost' ? (
+            <span><strong>Local Dev Sync Active:</strong> Changes are saved directly to <code>src/data/portfolio_data.json</code>. Just push to GitHub to publish.</span>
+          ) : localStorage.getItem('swastik_portfolio_github_token') ? (
+            <span><strong>GitHub Auto-Sync Active:</strong> Changes are committed to GitHub and will auto-deploy to the live site.</span>
+          ) : (
+            <span><strong>Browser-only mode:</strong> Configure <strong>GitHub Sync</strong> in the settings tab to update the live site everywhere automatically.</span>
+          )}
+        </p>
+      </div>
 
       <main className="max-w-5xl mx-auto px-6 py-10">
 
@@ -1302,7 +1645,8 @@ const AdminDashboard = ({ onLogout }) => {
             { id: 'projects', label: '📁  Projects' },
             { id: 'categories', label: '🏷️  Categories' },
             { id: 'experience', label: '💼  Experience' },
-            { id: 'aboutme', label: '👤  About Me' }
+            { id: 'aboutme', label: '👤  About Me' },
+            { id: 'settings', label: '⚙️  GitHub Sync' }
           ].map(tab => (
             <button
               key={tab.id}
@@ -1318,7 +1662,7 @@ const AdminDashboard = ({ onLogout }) => {
         {activeTab === 'categories' && (
           <CategoryManager
             categories={categories}
-            onChange={setCategories}
+            onChange={(updated) => triggerSync('categories', updated)}
             onToast={setToast}
           />
         )}
@@ -1327,6 +1671,7 @@ const AdminDashboard = ({ onLogout }) => {
         {activeTab === 'aboutme' && (
           <AboutMeManager
             onToast={setToast}
+            onSync={triggerSync}
           />
         )}
 
@@ -1335,6 +1680,13 @@ const AdminDashboard = ({ onLogout }) => {
           <ExperienceManager
             experiences={experiences}
             onSaveAll={persistExperiences}
+            onToast={setToast}
+          />
+        )}
+
+        {/* ── GitHub Sync Settings tab ── */}
+        {activeTab === 'settings' && (
+          <GithubSyncSettings
             onToast={setToast}
           />
         )}
