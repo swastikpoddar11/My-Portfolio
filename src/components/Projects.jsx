@@ -283,8 +283,8 @@ const makeStrip = (projects) => {
   const stripW = BASE_STRIP_W + extraCards * CARD_SLOT_WIDTH;
 
   // ── Collision-aware grid with relaxation ──
-  const ROWS = 4;
-  const cellW = 240; // horizontal cell spacing
+  const ROWS = 3;
+  const cellW = 300; // horizontal cell spacing
   const COLS = Math.ceil(stripW / cellW);
 
   // Vertical range covering screen height (just below selected work header to just above filter bar)
@@ -355,8 +355,8 @@ const makeStrip = (projects) => {
   }
 
   // Iterative 2D collision relaxation with horizontal wrapping
-  const minGap = 26; // minimum spacing between cards in px
-  const numIterations = 8;
+  const minGap = 50; // minimum spacing between cards in px
+  const numIterations = 16;
 
   for (let iter = 0; iter < numIterations; iter++) {
     for (let i = 0; i < positions.length; i++) {
