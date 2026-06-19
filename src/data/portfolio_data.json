@@ -1,272 +1,428 @@
 {
-  "lastUpdated": 1,
+  "lastUpdated": 1781903700000,
+  "categories": [
+    "Invitation Cards",
+    "Posters",
+    "Instagram Story",
+    "Graphics"
+  ],
   "projects": [
     {
-      "id": "blank-0",
+      "id": "template-0",
       "isBlank": true,
-      "category": "Graphic Design",
-      "title": "Composition #100",
+      "category": "Invitation Cards",
+      "title": "Rakhi and Teej Exhibition",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Simplicity is the ultimate sophistication.",
         "author": "L. da Vinci"
       },
-      "word": "PROCESS",
-      "styleType": 0
+      "word": "EXHIBITION",
+      "styleType": 0,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-1",
+      "id": "template-1",
       "isBlank": true,
-      "category": "Branding",
-      "title": "Composition #101",
+      "category": "Posters",
+      "title": "World Water Day 2026",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Design is intelligence made visible.",
         "author": "Alina Wheeler"
       },
-      "word": "AESTHETIC",
-      "styleType": 1
+      "word": "WATER",
+      "styleType": 3,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-2",
+      "id": "template-2",
       "isBlank": true,
-      "category": "Illustration",
-      "title": "Composition #102",
+      "category": "Instagram Story",
+      "title": "Campus Chronicle",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Form follows function.",
         "author": "Louis Sullivan"
       },
-      "word": "CONCEPT",
-      "styleType": 2
+      "word": "CHRONICLE",
+      "styleType": 1,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-3",
+      "id": "template-3",
       "isBlank": true,
-      "category": "Web Design",
-      "title": "Composition #103",
+      "category": "Instagram Story",
+      "title": "FET Chronicles",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Less is more.",
         "author": "Mies van der Rohe"
       },
-      "word": "STRUCTURE",
-      "styleType": 3
+      "word": "FET",
+      "styleType": 1,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-4",
+      "id": "template-4",
       "isBlank": true,
-      "category": "Graphic Design",
-      "title": "Composition #104",
+      "category": "Posters",
+      "title": "Inceptrix Hackathon 2.0",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Make it simple, but significant.",
         "author": "Don Draper"
       },
-      "word": "FLUIDITY",
-      "styleType": 0
+      "word": "HACKATHON",
+      "styleType": 3,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-5",
+      "id": "template-5",
       "isBlank": true,
-      "category": "Branding",
-      "title": "Composition #105",
+      "category": "Posters",
+      "title": "Ugadi",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Design is not just what it looks like.",
         "author": "Steve Jobs"
       },
-      "word": "BALANCE",
-      "styleType": 1
+      "word": "UGADI",
+      "styleType": 2,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-6",
+      "id": "template-6",
       "isBlank": true,
-      "category": "Illustration",
-      "title": "Composition #106",
+      "category": "Instagram Story",
+      "title": "Women's Day",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
-        "text": "Detail is not a detail. It is design.",
-        "author": "Charles Eames"
+        "text": "Design is not just what it looks like.",
+        "author": "Steve Jobs"
       },
-      "word": "DIMENSION",
-      "styleType": 2
+      "word": "WOMEN",
+      "styleType": 0,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-7",
+      "id": "template-7",
       "isBlank": true,
-      "category": "Web Design",
-      "title": "Composition #107",
+      "category": "Instagram Story",
+      "title": "New Year 2026",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Good design is as little design as possible.",
         "author": "Dieter Rams"
       },
-      "word": "MINIMAL",
-      "styleType": 3
+      "word": "NEW YEAR",
+      "styleType": 2,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-8",
+      "id": "template-8",
       "isBlank": true,
-      "category": "Graphic Design",
-      "title": "Composition #108",
+      "category": "Graphics",
+      "title": "Venue Points",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Art is anything you can get away with.",
         "author": "Andy Warhol"
       },
-      "word": "VOLUME",
-      "styleType": 0
+      "word": "VENUE",
+      "styleType": 3,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-9",
+      "id": "template-9",
       "isBlank": true,
-      "category": "Branding",
-      "title": "Composition #109",
+      "category": "Graphics",
+      "title": "Escape the Algorithm",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Creative expression is a human necessity.",
         "author": "Anonymous"
       },
-      "word": "REDUCTION",
-      "styleType": 1
+      "word": "ESCAPE",
+      "styleType": 2,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-10",
+      "id": "template-10",
       "isBlank": true,
-      "category": "Illustration",
-      "title": "Composition #110",
+      "category": "Graphics",
+      "title": "We believe in the Men in Blue",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Design is intelligence made visible.",
+        "author": "Alina Wheeler"
+      },
+      "word": "BELIEVE",
+      "styleType": 1,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
+    },
+    {
+      "id": "generic-0",
+      "isBlank": true,
+      "category": "Invitation Cards",
+      "title": "Composition #200",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Good design is as little design as possible.",
+        "author": "Dieter Rams"
+      },
+      "word": "PROCESS",
+      "styleType": 0,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
+    },
+    {
+      "id": "generic-1",
+      "isBlank": true,
+      "category": "Posters",
+      "title": "Composition #201",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Art is anything you can get away with.",
+        "author": "Andy Warhol"
+      },
+      "word": "AESTHETIC",
+      "styleType": 1,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
+    },
+    {
+      "id": "generic-2",
+      "isBlank": true,
+      "category": "Instagram Story",
+      "title": "Composition #202",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Creative expression is a human necessity.",
+        "author": "Anonymous"
+      },
+      "word": "CONCEPT",
+      "styleType": 2,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
+    },
+    {
+      "id": "generic-3",
+      "isBlank": true,
+      "category": "Graphics",
+      "title": "Composition #203",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Simplicity is the ultimate sophistication.",
         "author": "L. da Vinci"
       },
-      "word": "PROCESS",
-      "styleType": 2
+      "word": "STRUCTURE",
+      "styleType": 3,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-11",
+      "id": "generic-4",
       "isBlank": true,
-      "category": "Web Design",
-      "title": "Composition #111",
+      "category": "Invitation Cards",
+      "title": "Composition #204",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Design is intelligence made visible.",
         "author": "Alina Wheeler"
       },
-      "word": "AESTHETIC",
-      "styleType": 3
+      "word": "FLUIDITY",
+      "styleType": 0,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-12",
+      "id": "generic-5",
       "isBlank": true,
-      "category": "Graphic Design",
-      "title": "Composition #112",
+      "category": "Posters",
+      "title": "Composition #205",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Form follows function.",
         "author": "Louis Sullivan"
       },
-      "word": "CONCEPT",
-      "styleType": 0
+      "word": "BALANCE",
+      "styleType": 1,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-13",
+      "id": "generic-6",
       "isBlank": true,
-      "category": "Branding",
-      "title": "Composition #113",
+      "category": "Instagram Story",
+      "title": "Composition #206",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Less is more.",
         "author": "Mies van der Rohe"
       },
-      "word": "STRUCTURE",
-      "styleType": 1
+      "word": "DIMENSION",
+      "styleType": 2,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-14",
+      "id": "generic-7",
       "isBlank": true,
-      "category": "Illustration",
-      "title": "Composition #114",
+      "category": "Graphics",
+      "title": "Composition #207",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Make it simple, but significant.",
         "author": "Don Draper"
       },
-      "word": "FLUIDITY",
-      "styleType": 2
+      "word": "MINIMAL",
+      "styleType": 3,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-15",
+      "id": "generic-8",
       "isBlank": true,
-      "category": "Web Design",
-      "title": "Composition #115",
+      "category": "Invitation Cards",
+      "title": "Composition #208",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Design is not just what it looks like.",
         "author": "Steve Jobs"
       },
-      "word": "BALANCE",
-      "styleType": 3
+      "word": "VOLUME",
+      "styleType": 0,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-16",
+      "id": "generic-9",
       "isBlank": true,
-      "category": "Graphic Design",
-      "title": "Composition #116",
+      "category": "Posters",
+      "title": "Composition #209",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Detail is not a detail. It is design.",
         "author": "Charles Eames"
       },
-      "word": "DIMENSION",
-      "styleType": 0
+      "word": "REDUCTION",
+      "styleType": 1,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-17",
+      "id": "generic-10",
       "isBlank": true,
-      "category": "Branding",
-      "title": "Composition #117",
+      "category": "Instagram Story",
+      "title": "Composition #210",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Good design is as little design as possible.",
         "author": "Dieter Rams"
       },
-      "word": "MINIMAL",
-      "styleType": 1
+      "word": "PROCESS",
+      "styleType": 2,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-18",
+      "id": "generic-11",
       "isBlank": true,
-      "category": "Illustration",
-      "title": "Composition #118",
+      "category": "Graphics",
+      "title": "Composition #211",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Art is anything you can get away with.",
         "author": "Andy Warhol"
       },
-      "word": "VOLUME",
-      "styleType": 2
+      "word": "AESTHETIC",
+      "styleType": 3,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     },
     {
-      "id": "blank-19",
+      "id": "generic-12",
       "isBlank": true,
-      "category": "Web Design",
-      "title": "Composition #119",
+      "category": "Invitation Cards",
+      "title": "Composition #212",
       "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
       "quote": {
         "text": "Creative expression is a human necessity.",
         "author": "Anonymous"
       },
-      "word": "REDUCTION",
-      "styleType": 3
+      "word": "CONCEPT",
+      "styleType": 0,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
+    },
+    {
+      "id": "generic-13",
+      "isBlank": true,
+      "category": "Posters",
+      "title": "Composition #213",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Simplicity is the ultimate sophistication.",
+        "author": "L. da Vinci"
+      },
+      "word": "STRUCTURE",
+      "styleType": 1,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
+    },
+    {
+      "id": "generic-14",
+      "isBlank": true,
+      "category": "Instagram Story",
+      "title": "Composition #214",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Design is intelligence made visible.",
+        "author": "Alina Wheeler"
+      },
+      "word": "FLUIDITY",
+      "styleType": 2,
+      "image": "",
+      "fileName": "",
+      "downloadUrl": ""
     }
-  ],
-  "categories": [
-    "Graphic Design",
-    "Branding",
-    "Illustration",
-    "Web Design"
   ],
   "experiences": [
     {

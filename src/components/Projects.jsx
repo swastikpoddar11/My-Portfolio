@@ -272,8 +272,8 @@ export const renderBlankCardContent = (project, isHovered, isDayMode) => {
 
 // ─── Dynamic strip generator ──────────────────────────────────────────────────
 // STRIP_W scales with card count so more cards = denser coverage with no empty gaps.
-const BASE_STRIP_W = 3200;
-const CARD_SLOT_WIDTH = 300;   // px of extra strip per extra card
+const BASE_STRIP_W = 2000;
+const CARD_SLOT_WIDTH = 150;   // px of extra strip per extra card
 
 const makeStrip = (projects) => {
   if (!projects.length) return { strip: [], stripW: BASE_STRIP_W };
@@ -283,7 +283,7 @@ const makeStrip = (projects) => {
 
   // ── Collision-aware grid with relaxation ──
   const ROWS = 3;
-  const cellW = 300; // horizontal cell spacing
+  const cellW = 180; // horizontal cell spacing
   const COLS = Math.ceil(stripW / cellW);
 
   // Vertical range covering screen height (just below selected work header to just above filter bar)
@@ -336,9 +336,9 @@ const makeStrip = (projects) => {
       const x = centreX + xJitter;
       const y = centreY + yJitter;
 
-      // Z depth (-60 to +60)
+      // Z depth (60 to 150)
       const zRaw = rnd(sZ);
-      const z = Math.round((Math.sin(zRaw * Math.PI) * 0.6 + zRaw * 0.4) * 120 - 60);
+      const z = Math.round((Math.sin(zRaw * Math.PI) * 0.6 + zRaw * 0.4) * 90 + 60);
 
       positions.push({
         x,
@@ -354,7 +354,7 @@ const makeStrip = (projects) => {
   }
 
   // Iterative 2D collision relaxation with horizontal wrapping
-  const minGap = 50; // minimum spacing between cards in px
+  const minGap = -25; // minimum spacing between cards in px (negative allows overlapping)
   const numIterations = 16;
 
   for (let iter = 0; iter < numIterations; iter++) {
@@ -540,11 +540,11 @@ const Projects = ({ isDayMode }) => {
       const uid = `${keyPrefix}-${key}`;
       const isHovered = hoveredKey === uid;
 
-      // depth factor 0→1 (z ranges from -60 to +60)
-      const depthFactor = (z + 60) / 120;
+      // depth factor 0→1 (z ranges from 60 to 150)
+      const depthFactor = (z - 60) / 90;
 
       // ALL cards are fully interactive regardless of depth.
-      const baseZIndex = Math.round(100 + z);           // -120 → 320
+      const baseZIndex = Math.round(100 + z);           // 160 → 250
       const effectiveZ = isHovered ? 999 : baseZIndex;
 
       const baseOpacity = 0.55 + depthFactor * 0.45;     // 0.55 → 1.0
