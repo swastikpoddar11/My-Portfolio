@@ -457,7 +457,9 @@ const Projects = ({ isDayMode }) => {
 
   const filtered = activeCategory === 'All'
     ? projects
-    : projects.filter(p => p.category === activeCategory);
+    : activeCategory === 'Graphic Design'
+      ? projects.filter(p => ['Graphic Design', 'Invitation Cards', 'Posters', 'Instagram Story'].includes(p.category))
+      : projects.filter(p => p.category === activeCategory);
 
   // Recompute strip whenever filtered projects change
   const { strip, stripW } = useMemo(() => makeStrip(filtered), [filtered]);
