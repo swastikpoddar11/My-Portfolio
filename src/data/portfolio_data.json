@@ -1,0 +1,418 @@
+{
+  "lastUpdated": 1,
+  "projects": [
+    {
+      "id": "blank-0",
+      "isBlank": true,
+      "category": "Graphic Design",
+      "title": "Composition #100",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Simplicity is the ultimate sophistication.",
+        "author": "L. da Vinci"
+      },
+      "word": "PROCESS",
+      "styleType": 0
+    },
+    {
+      "id": "blank-1",
+      "isBlank": true,
+      "category": "Branding",
+      "title": "Composition #101",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Design is intelligence made visible.",
+        "author": "Alina Wheeler"
+      },
+      "word": "AESTHETIC",
+      "styleType": 1
+    },
+    {
+      "id": "blank-2",
+      "isBlank": true,
+      "category": "Illustration",
+      "title": "Composition #102",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Form follows function.",
+        "author": "Louis Sullivan"
+      },
+      "word": "CONCEPT",
+      "styleType": 2
+    },
+    {
+      "id": "blank-3",
+      "isBlank": true,
+      "category": "Web Design",
+      "title": "Composition #103",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Less is more.",
+        "author": "Mies van der Rohe"
+      },
+      "word": "STRUCTURE",
+      "styleType": 3
+    },
+    {
+      "id": "blank-4",
+      "isBlank": true,
+      "category": "Graphic Design",
+      "title": "Composition #104",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Make it simple, but significant.",
+        "author": "Don Draper"
+      },
+      "word": "FLUIDITY",
+      "styleType": 0
+    },
+    {
+      "id": "blank-5",
+      "isBlank": true,
+      "category": "Branding",
+      "title": "Composition #105",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Design is not just what it looks like.",
+        "author": "Steve Jobs"
+      },
+      "word": "BALANCE",
+      "styleType": 1
+    },
+    {
+      "id": "blank-6",
+      "isBlank": true,
+      "category": "Illustration",
+      "title": "Composition #106",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Detail is not a detail. It is design.",
+        "author": "Charles Eames"
+      },
+      "word": "DIMENSION",
+      "styleType": 2
+    },
+    {
+      "id": "blank-7",
+      "isBlank": true,
+      "category": "Web Design",
+      "title": "Composition #107",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Good design is as little design as possible.",
+        "author": "Dieter Rams"
+      },
+      "word": "MINIMAL",
+      "styleType": 3
+    },
+    {
+      "id": "blank-8",
+      "isBlank": true,
+      "category": "Graphic Design",
+      "title": "Composition #108",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Art is anything you can get away with.",
+        "author": "Andy Warhol"
+      },
+      "word": "VOLUME",
+      "styleType": 0
+    },
+    {
+      "id": "blank-9",
+      "isBlank": true,
+      "category": "Branding",
+      "title": "Composition #109",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Creative expression is a human necessity.",
+        "author": "Anonymous"
+      },
+      "word": "REDUCTION",
+      "styleType": 1
+    },
+    {
+      "id": "blank-10",
+      "isBlank": true,
+      "category": "Illustration",
+      "title": "Composition #110",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Simplicity is the ultimate sophistication.",
+        "author": "L. da Vinci"
+      },
+      "word": "PROCESS",
+      "styleType": 2
+    },
+    {
+      "id": "blank-11",
+      "isBlank": true,
+      "category": "Web Design",
+      "title": "Composition #111",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Design is intelligence made visible.",
+        "author": "Alina Wheeler"
+      },
+      "word": "AESTHETIC",
+      "styleType": 3
+    },
+    {
+      "id": "blank-12",
+      "isBlank": true,
+      "category": "Graphic Design",
+      "title": "Composition #112",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Form follows function.",
+        "author": "Louis Sullivan"
+      },
+      "word": "CONCEPT",
+      "styleType": 0
+    },
+    {
+      "id": "blank-13",
+      "isBlank": true,
+      "category": "Branding",
+      "title": "Composition #113",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Less is more.",
+        "author": "Mies van der Rohe"
+      },
+      "word": "STRUCTURE",
+      "styleType": 1
+    },
+    {
+      "id": "blank-14",
+      "isBlank": true,
+      "category": "Illustration",
+      "title": "Composition #114",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Make it simple, but significant.",
+        "author": "Don Draper"
+      },
+      "word": "FLUIDITY",
+      "styleType": 2
+    },
+    {
+      "id": "blank-15",
+      "isBlank": true,
+      "category": "Web Design",
+      "title": "Composition #115",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Design is not just what it looks like.",
+        "author": "Steve Jobs"
+      },
+      "word": "BALANCE",
+      "styleType": 3
+    },
+    {
+      "id": "blank-16",
+      "isBlank": true,
+      "category": "Graphic Design",
+      "title": "Composition #116",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Detail is not a detail. It is design.",
+        "author": "Charles Eames"
+      },
+      "word": "DIMENSION",
+      "styleType": 0
+    },
+    {
+      "id": "blank-17",
+      "isBlank": true,
+      "category": "Branding",
+      "title": "Composition #117",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Good design is as little design as possible.",
+        "author": "Dieter Rams"
+      },
+      "word": "MINIMAL",
+      "styleType": 1
+    },
+    {
+      "id": "blank-18",
+      "isBlank": true,
+      "category": "Illustration",
+      "title": "Composition #118",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Art is anything you can get away with.",
+        "author": "Andy Warhol"
+      },
+      "word": "VOLUME",
+      "styleType": 2
+    },
+    {
+      "id": "blank-19",
+      "isBlank": true,
+      "category": "Web Design",
+      "title": "Composition #119",
+      "description": "A minimalist aesthetic study exploring grid structures, negative space, and contemporary design principles.",
+      "quote": {
+        "text": "Creative expression is a human necessity.",
+        "author": "Anonymous"
+      },
+      "word": "REDUCTION",
+      "styleType": 3
+    }
+  ],
+  "categories": [
+    "Graphic Design",
+    "Branding",
+    "Illustration",
+    "Web Design"
+  ],
+  "experiences": [
+    {
+      "id": 1,
+      "role": "Data & Insights Intern",
+      "company": "Tapnex (NextGen Payments)",
+      "duration": "Jul 2025 – Present",
+      "description": "Analyzed transaction and customer data using Excel, SQL, and Python to identify business insights and trends. Built interactive dashboards and reports to support data-driven decision-making. Developed SQL queries for data extraction, transformation, and reporting workflows, while collaborating with cross-functional teams to improve campaign tracking and performance analysis.",
+      "tags": [
+        "SQL",
+        "Python",
+        "Excel",
+        "Analytics"
+      ],
+      "category": "Experience"
+    },
+    {
+      "id": 2,
+      "role": "Graphic Designing Intern",
+      "company": "Koios Studios",
+      "duration": "Apr 2026 – Present",
+      "description": "Designed branding assets, social media creatives, and promotional materials for campaigns and digital outreach. Collaborated with creative teams on visual storytelling and brand identity development. Assisted in campaign presentation design and audience engagement strategies, and contributed to content creation workflows for online marketing initiatives.",
+      "tags": [
+        "Branding",
+        "Visuals",
+        "Digital Art"
+      ],
+      "category": "Experience"
+    },
+    {
+      "id": 3,
+      "role": "Graphic Design Intern",
+      "company": "Praxto Designs",
+      "duration": "Jun 2026 – Present",
+      "description": "Designed social media creatives, branding assets, and promotional materials for clients across multiple domains. Collaborated with design teams to maintain visual consistency and brand identity. Created digital content for marketing campaigns, presentations, and online engagement initiatives, and worked closely with stakeholders to align deliverables.",
+      "tags": [
+        "Graphic Design",
+        "Figma",
+        "Marketing"
+      ],
+      "category": "Experience"
+    },
+    {
+      "id": 4,
+      "role": "Design Lead",
+      "company": "FOSS Club",
+      "duration": "Dec 2024 – Present",
+      "description": "Led branding and visual identity design for hackathons, workshops, and technical events. Designed posters, banners, reels, and social media creatives for digital campaigns. Coordinated promotional activities and content strategies to increase audience engagement, while managing collaboration between creative and organizing teams for smooth execution.",
+      "tags": [
+        "Leadership",
+        "Branding",
+        "FOSS"
+      ],
+      "category": "Activity"
+    },
+    {
+      "id": 5,
+      "role": "Treasurer & Head of Operations",
+      "company": "Tech Council – FET",
+      "duration": "Jun 2026 – Present",
+      "description": "Oversee operational planning and execution of technical events, workshops, and student initiatives. Manage budgeting, expense tracking, and financial coordination for council activities. Coordinate logistics to ensure smooth execution of programs, while leading collaboration between technical, creative, and organizing teams to improve workflow efficiency.",
+      "tags": [
+        "Operations",
+        "Budgeting",
+        "Logistics"
+      ],
+      "category": "Activity"
+    },
+    {
+      "id": 6,
+      "role": "Tech Council Member & Designer",
+      "company": "Tech Council – FET",
+      "duration": "Jun 2024 – May 2026",
+      "description": "Assisted in organizing technical events, student engagement activities, and departmental initiatives. Designed branding assets, posters, and digital creatives for council-led programs. Supported planning, communication, and execution of student-focused events, working closely with council leadership and volunteers.",
+      "tags": [
+        "Design",
+        "FET",
+        "Event Planning"
+      ],
+      "category": "Activity"
+    },
+    {
+      "id": 7,
+      "role": "Member",
+      "company": "Alumni Affairs & Outreach",
+      "duration": "Aug 2024 – Present",
+      "description": "Contributed to alumni engagement campaigns, outreach initiatives, and networking activities. Assisted in communication workflows, event coordination, and audience interaction. Supported branding and digital promotional activities for outreach programs, strengthening connections and relations across the graduate network.",
+      "tags": [
+        "Outreach",
+        "Engagement",
+        "Branding"
+      ],
+      "category": "Activity"
+    },
+    {
+      "id": 8,
+      "role": "Organizing Core Team Member",
+      "company": "Inceptrix 2025 Hackathon",
+      "duration": "Jan 2025",
+      "description": "Managed branding, participant engagement, and event coordination for a pan-India hackathon. Assisted in logistics, audience management, and promotional operations for over 100 participants. Coordinated closely with organizing teams and coordinators to ensure smooth execution of hackathon activities.",
+      "tags": [
+        "Hackathon",
+        "Operations",
+        "Management"
+      ],
+      "category": "Activity"
+    },
+    {
+      "id": 9,
+      "role": "Organizing Team Member",
+      "company": "Inceptrix 2026 Hackathon",
+      "duration": "Jan 2026",
+      "description": "Assisted in promotions, participant communication, and event management activities. Supported outreach campaigns, technical sessions, and audience engagement initiatives. Collaborated with organizing teams to streamline execution and enhance the overall participant experience.",
+      "tags": [
+        "Hackathon",
+        "Outreach",
+        "Logistics"
+      ],
+      "category": "Activity"
+    },
+    {
+      "id": 10,
+      "role": "Designer",
+      "company": "CRCE Cell",
+      "duration": "Jul 2024 – Present",
+      "description": "Created social media creatives, posters, and branding materials for technical and cultural events. Assisted in digital outreach campaigns and promotional strategy execution. Collaborated with coordinators to design high-impact visual communications that drove engagement.",
+      "tags": [
+        "Design",
+        "CRCE",
+        "Promotions"
+      ],
+      "category": "Activity"
+    }
+  ],
+  "skills": [
+    "Canva",
+    "Python",
+    "n8n",
+    "Agentic AI",
+    "SQL",
+    "Power BI",
+    "UI/UX",
+    "Brand Identity",
+    "Visual Storytelling",
+    "Google Analytics"
+  ],
+  "resume": "",
+  "resumeName": "Swastik Poddar - Social Media.pdf"
+}

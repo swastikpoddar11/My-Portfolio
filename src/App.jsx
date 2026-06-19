@@ -9,6 +9,7 @@ import LetsConnect from './components/LetsConnect';
 import AdminProjects from './components/AdminProjects';
 import landingDayVideo from './assets/landing_day.mp4';
 import landingNightVideo from './assets/landing_night.mp4';
+import portfolioData from './data/portfolio_data.json';
 
 // Show admin page when URL path is /admin
 const isAdminPath = () => window.location.pathname.replace(/\/$/, '') === '/admin';
@@ -176,6 +177,41 @@ function App() {
   const [time, setTime] = useState(new Date());
   const nightVideoRef = useRef(null);
   const dayVideoRef = useRef(null);
+
+  useEffect(() => {
+    try {
+      const localLastUpdated = localStorage.getItem('swastik_portfolio_last_updated');
+      const incomingLastUpdated = portfolioData.lastUpdated;
+      
+      if (!localLastUpdated || parseInt(localLastUpdated) < incomingLastUpdated) {
+        if (portfolioData.projects) {
+          localStorage.setItem('swastik_portfolio_projects', JSON.stringify(portfolioData.projects));
+        }
+        if (portfolioData.categories) {
+          localStorage.setItem('swastik_portfolio_categories', JSON.stringify(portfolioData.categories));
+        }
+        if (portfolioData.experiences) {
+          localStorage.setItem('swastik_portfolio_experiences', JSON.stringify(portfolioData.experiences));
+        }
+        if (portfolioData.skills) {
+          localStorage.setItem('swastik_portfolio_skills', JSON.stringify(portfolioData.skills));
+        }
+        if (portfolioData.resume) {
+          localStorage.setItem('swastik_portfolio_resume', portfolioData.resume);
+        }
+        if (portfolioData.resumeName) {
+          localStorage.setItem('swastik_portfolio_resume_name', portfolioData.resumeName);
+        }
+        
+        localStorage.setItem('swastik_portfolio_last_updated', incomingLastUpdated.toString());
+        localStorage.setItem('swastik_portfolio_blanks_initialized', 'true');
+        
+        window.dispatchEvent(new Event('storage'));
+      }
+    } catch (err) {
+      console.error('Portfolio data synchronization failed:', err);
+    }
+  }, []);
 
   useEffect(() => {
     if (isAdmin) return;

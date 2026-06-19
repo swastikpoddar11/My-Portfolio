@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { X, Download, Edit3 } from 'lucide-react';
+import portfolioData from '../data/portfolio_data.json';
 
 export const STORAGE_KEY = 'swastik_portfolio_projects';
 export const CATEGORIES_KEY = 'swastik_portfolio_categories';
 const DEFAULT_CATEGORIES = ['Graphic Design', 'Branding', 'Illustration', 'Web Design'];
 
 const loadCategories = () => {
-  try { const s = localStorage.getItem(CATEGORIES_KEY); return s ? JSON.parse(s) : DEFAULT_CATEGORIES; }
-  catch { return DEFAULT_CATEGORIES; }
+  try { const s = localStorage.getItem(CATEGORIES_KEY); return s ? JSON.parse(s) : (portfolioData.categories || DEFAULT_CATEGORIES); }
+  catch { return portfolioData.categories || DEFAULT_CATEGORIES; }
 };
 
 // Deterministic seeded random (0–1) for a given integer seed
@@ -51,9 +52,7 @@ const makeBlankCards = () => {
   return blanks;
 };
 
-export const defaultProjects = [
-  ...makeBlankCards()
-];
+export const defaultProjects = portfolioData.projects || makeBlankCards();
 
 // ─── Blank/Placeholder Card Content Renderer ──────────────────────────────────
 export const renderBlankCardContent = (project, isHovered, isDayMode) => {
@@ -426,12 +425,13 @@ const Projects = ({ isDayMode }) => {
         }
         return parsed;
       } else {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProjects));
+        const fallback = portfolioData.projects || defaultProjects;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(fallback));
         localStorage.setItem('swastik_portfolio_blanks_initialized', 'true');
-        return defaultProjects;
+        return fallback;
       }
     } catch {
-      return defaultProjects;
+      return portfolioData.projects || defaultProjects;
     }
   });
   const [categories, setCategories] = useState(loadCategories);

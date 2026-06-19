@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Plus, Trash2, Save, Eye, EyeOff, Lock, LogOut, AlertCircle, CheckCircle, Edit3, Tag, Upload, ImageOff, FolderOpen, Download, Briefcase, Trophy } from 'lucide-react';
 import { defaultProjects, renderBlankCardContent } from './Projects';
 import { defaultExperiences } from './Experience';
+import portfolioData from '../data/portfolio_data.json';
 
 export const STORAGE_KEY = 'swastik_portfolio_projects';
 
 // ─── Storage keys ─────────────────────────────────────────────────────────────
 export const CATEGORIES_KEY  = 'swastik_portfolio_categories';
-export const DEFAULT_CATEGORIES = ['Graphic Design', 'Branding', 'Illustration', 'Web Design'];
+export const DEFAULT_CATEGORIES = portfolioData.categories || ['Graphic Design', 'Branding', 'Illustration', 'Web Design'];
 
 const loadCategories = () => {
   try {
@@ -733,7 +734,7 @@ const AboutMeManager = ({ onToast }) => {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
-  const defaultSkills = [
+  const defaultSkills = portfolioData.skills || [
     'Canva', 'Python', 'n8n', 'Agentic AI', 'SQL',
     'Power BI', 'UI/UX', 'Brand Identity', 'Visual Storytelling', 'Google Analytics'
   ];
@@ -750,8 +751,10 @@ const AboutMeManager = ({ onToast }) => {
 
   useEffect(() => {
     try {
-      setResume(localStorage.getItem('swastik_portfolio_resume') || '');
-      setResumeName(localStorage.getItem('swastik_portfolio_resume_name') || 'Swastik Poddar - Social Media.pdf');
+      const storedResume = localStorage.getItem('swastik_portfolio_resume');
+      const storedResumeName = localStorage.getItem('swastik_portfolio_resume_name');
+      setResume(storedResume || portfolioData.resume || '');
+      setResumeName(storedResumeName || portfolioData.resumeName || 'Swastik Poddar - Social Media.pdf');
     } catch {}
   }, []);
 
@@ -1078,6 +1081,90 @@ const AdminDashboard = ({ onLogout }) => {
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [toast, setToast]               = useState(null);
   const [activeTab, setActiveTab]        = useState('projects'); // 'projects' | 'categories'
+  const importFileInputRef = useRef(null);
+
+  const handleExportJSON = () => {
+    try {
+      const data = {
+        lastUpdated: Date.now(),
+        projects: JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'),
+        categories: JSON.parse(localStorage.getItem(CATEGORIES_KEY) || '[]'),
+        experiences: JSON.parse(localStorage.getItem('swastik_portfolio_experiences') || '[]'),
+        skills: JSON.parse(localStorage.getItem('swastik_portfolio_skills') || '[]'),
+        resume: localStorage.getItem('swastik_portfolio_resume') || '',
+        resumeName: localStorage.getItem('swastik_portfolio_resume_name') || 'Swastik Poddar - Social Media.pdf'
+      };
+
+      const jsonStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'portfolio_data.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setToast({ msg: 'Data exported successfully.', type: 'success' });
+    } catch (err) {
+      setToast({ msg: 'Failed to export data.', type: 'error' });
+    }
+  };
+
+  const handleImportJSON = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target.result);
+        if (!data || typeof data !== 'object') {
+          throw new Error('Invalid JSON structure.');
+        }
+
+        if (data.projects) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data.projects));
+          setProjects(data.projects);
+        }
+        if (data.categories) {
+          localStorage.setItem(CATEGORIES_KEY, JSON.stringify(data.categories));
+          setCategories(data.categories);
+        }
+        if (data.experiences) {
+          localStorage.setItem('swastik_portfolio_experiences', JSON.stringify(data.experiences));
+          setExperiences(data.experiences);
+        }
+        if (data.resume) {
+          localStorage.setItem('swastik_portfolio_resume', data.resume);
+        } else {
+          localStorage.removeItem('swastik_portfolio_resume');
+        }
+        if (data.resumeName) {
+          localStorage.setItem('swastik_portfolio_resume_name', data.resumeName);
+        } else {
+          localStorage.removeItem('swastik_portfolio_resume_name');
+        }
+        if (data.skills) {
+          localStorage.setItem('swastik_portfolio_skills', JSON.stringify(data.skills));
+        }
+        if (data.lastUpdated) {
+          localStorage.setItem('swastik_portfolio_last_updated', data.lastUpdated.toString());
+        } else {
+          localStorage.setItem('swastik_portfolio_last_updated', Date.now().toString());
+        }
+
+        localStorage.setItem('swastik_portfolio_blanks_initialized', 'true');
+
+        window.dispatchEvent(new Event('storage'));
+        setToast({ msg: 'Data imported successfully.', type: 'success' });
+      } catch (err) {
+        setToast({ msg: 'Failed to import JSON: Invalid format.', type: 'error' });
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
 
   const persistExperiences = (updated) => {
     try {
@@ -1178,6 +1265,19 @@ const AdminDashboard = ({ onLogout }) => {
         </div>
         <div className="flex items-center gap-3">
           <a href="/" className={`hidden sm:inline-flex ${btn} border border-[#E8D9C5]/12 text-[#E8D9C5]/50 hover:border-[#E8D9C5]/25 hover:text-[#E8D9C5]`}>View Site</a>
+          <button onClick={handleExportJSON} className={`${btn} border border-[#D4B48A]/35 text-[#D4B48A] hover:bg-[#D4B48A]/10`} title="Export data to portfolio_data.json">
+            <Download className="w-3.5 h-3.5" /> Export Data
+          </button>
+          <button onClick={() => importFileInputRef.current?.click()} className={`${btn} border border-[#E8D9C5]/15 text-[#E8D9C5]/70 hover:border-[#E8D9C5]/30`} title="Import data from portfolio_data.json">
+            <Upload className="w-3.5 h-3.5" /> Import Data
+          </button>
+          <input 
+            type="file" 
+            ref={importFileInputRef} 
+            className="hidden" 
+            accept=".json" 
+            onChange={handleImportJSON} 
+          />
           <button onClick={onLogout} className={`${btn} border border-red-500/20 text-red-400/70 hover:border-red-500/40 hover:text-red-400`}>
             <LogOut className="w-3.5 h-3.5" /> Logout
           </button>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Briefcase, Trophy, Calendar } from 'lucide-react';
+import portfolioData from '../data/portfolio_data.json';
 
-export const defaultExperiences = [
+export const defaultExperiences = portfolioData.experiences || [
   {
     id: 1,
     role: 'Data & Insights Intern',

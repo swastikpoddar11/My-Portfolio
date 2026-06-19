@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import aboutAvatarImg from '../assets/avatar_v7.png';
 import resumePdf from '../../image/Swastik Poddar - Social Media.pdf';
+import portfolioData from '../data/portfolio_data.json';
 
 // Custom Figma SVG icon
 const FigmaIcon = (props) => (
@@ -43,13 +44,20 @@ const LinkedinIcon = (props) => (
   </svg>
 );
 
-const defaultSkills = [
+const defaultSkills = portfolioData.skills || [
   'Canva', 'Python', 'n8n', 'Agentic AI', 'SQL',
   'Power BI', 'UI/UX', 'Brand Identity', 'Visual Storytelling', 'Google Analytics'
 ];
 
 const AboutMe = ({ isDayMode }) => {
-  const [resumeUrl, setResumeUrl] = React.useState(resumePdf);
+  const [resumeUrl, setResumeUrl] = React.useState(() => {
+    try {
+      const custom = localStorage.getItem('swastik_portfolio_resume');
+      return custom || portfolioData.resume || resumePdf;
+    } catch {
+      return portfolioData.resume || resumePdf;
+    }
+  });
   const [skills, setSkills] = React.useState(() => {
     try {
       const s = localStorage.getItem('swastik_portfolio_skills');
@@ -71,7 +79,7 @@ const AboutMe = ({ isDayMode }) => {
     const handleStorage = () => {
       try {
         const custom = localStorage.getItem('swastik_portfolio_resume');
-        setResumeUrl(custom || resumePdf);
+        setResumeUrl(custom || portfolioData.resume || resumePdf);
 
         const customSkills = localStorage.getItem('swastik_portfolio_skills');
         setSkills(customSkills ? JSON.parse(customSkills) : defaultSkills);
